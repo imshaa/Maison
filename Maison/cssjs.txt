@@ -1,0 +1,567 @@
+-------------------------------------------- for navbar--------------------------------------------------------
+
+import React, { Component } from "react";
+
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1512;
+    --warm-gray: #8C8480;
+    --accent: #C8602A;
+    --accent-light: #E8845A;
+    --border: #E2DDD8;
+    --white: #FFFFFF;
+    --shadow: rgba(26,21,18,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .nav-root {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px var(--shadow);
+  }
+
+  /* ── TOP BAR ── */
+  .nav-topbar {
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    padding: 8px 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .nav-topbar-close {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--cream);
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .nav-topbar-close:hover { opacity: 1; }
+
+  /* ── MAIN ROW ── */
+  .nav-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 72px;
+    gap: 24px;
+  }
+
+  /* ── LOGO ── */
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .nav-logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .nav-logo-mark::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2.5px solid var(--cream);
+    border-radius: 3px;
+    transform: rotate(15deg);
+    position: absolute;
+  }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .nav-logo-text span {
+    color: var(--accent);
+  }
+
+  /* ── SEARCH ── */
+  .nav-search {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+  }
+  .nav-search input {
+    width: 100%;
+    padding: 10px 16px 10px 44px;
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .nav-search input::placeholder { color: var(--warm-gray); }
+  .nav-search input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200,96,42,0.12);
+  }
+  .nav-search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--warm-gray);
+    pointer-events: none;
+  }
+  .nav-search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    border: none;
+    border-radius: 100px;
+    color: white;
+    padding: 5px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .nav-search-btn:hover { background: var(--accent-light); }
+
+  /* ── ACTIONS ── */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .nav-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    position: relative;
+    white-space: nowrap;
+  }
+  .nav-action-btn:hover {
+    background: rgba(26,21,18,0.06);
+  }
+  .nav-action-btn svg { flex-shrink: 0; }
+  .nav-badge {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: var(--accent);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--cream);
+  }
+  .nav-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+    margin: 0 6px;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .nav-bottom {
+    border-top: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 46px;
+  }
+  .nav-category {
+    position: relative;
+  }
+  .nav-category-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 18px;
+    height: 46px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.15s;
+    position: relative;
+    white-space: nowrap;
+  }
+  .nav-category-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+    border-radius: 2px 2px 0 0;
+  }
+  .nav-category-btn:hover { color: var(--accent); }
+  .nav-category-btn:hover::after { transform: scaleX(1); }
+  .nav-category-btn.active { color: var(--accent); }
+  .nav-category-btn.active::after { transform: scaleX(1); }
+
+  .nav-chevron {
+    transition: transform 0.2s;
+    opacity: 0.5;
+  }
+  .nav-category:hover .nav-chevron { transform: rotate(180deg); opacity: 1; }
+
+  /* ── DROPDOWN ── */
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 0;
+    min-width: 200px;
+    box-shadow: 0 8px 32px var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    z-index: 100;
+  }
+  .nav-category:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .nav-dropdown-item {
+    display: block;
+    padding: 9px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-dropdown-item:hover {
+    background: var(--cream);
+    color: var(--accent);
+  }
+  .nav-dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 12px;
+  }
+  .nav-sale-tag {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    letter-spacing: 0.04em;
+  }
+  .nav-bottom-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-track-link {
+    font-size: 12.5px;
+    color: var(--warm-gray);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.15s;
+  }
+  .nav-track-link:hover { color: var(--accent); }
+
+  /* ── MOBILE TOGGLE ── */
+  .nav-mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--ink);
+  }
+
+  /* ── MOBILE DRAWER ── */
+  .nav-mobile-drawer {
+    display: none;
+    flex-direction: column;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 16px 0;
+  }
+  .nav-mobile-drawer.open { display: flex; }
+  .nav-mobile-link {
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.12s, color 0.12s;
+  }
+  .nav-mobile-link:hover { background: var(--cream); color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .nav-main { padding: 0 20px; }
+    .nav-bottom { display: none; }
+    .nav-actions .nav-action-btn span { display: none; }
+    .nav-mobile-toggle { display: flex; }
+  }
+  @media (max-width: 600px) {
+    .nav-search { max-width: 180px; }
+    .nav-logo-text { font-size: 18px; }
+  }
+`;
+
+class ShopNavbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showBanner: true,
+      mobileOpen: false,
+      cartCount: 3,
+      wishlistCount: 5,
+    };
+  }
+
+  render() {
+    const { showBanner, mobileOpen, cartCount, wishlistCount } = this.state;
+
+    const categories = [
+      {
+        label: "Women",
+        items: ["Dresses", "Tops & Blouses", "Pants & Jeans", "Jackets", "Activewear"],
+      },
+      {
+        label: "Men",
+        items: ["T-Shirts", "Shirts", "Trousers", "Outerwear", "Sportswear"],
+      },
+      {
+        label: "Accessories",
+        items: ["Bags & Purses", "Jewelry", "Watches", "Sunglasses", "Scarves"],
+      },
+      {
+        label: "Home & Living",
+        items: ["Bedding", "Kitchen", "Decor", "Lighting", "Storage"],
+      },
+      {
+        label: "Beauty",
+        items: ["Skincare", "Makeup", "Haircare", "Fragrances", "Tools"],
+      },
+      {
+        label: "Sale",
+        sale: true,
+        items: ["Up to 50% Off", "New Markdowns", "Clearance", "Last Sizes"],
+      },
+    ];
+
+    return (
+      <>
+        <style>{styles}</style>
+        <nav className="nav-root">
+
+          {/* Top announcement bar */}
+          {showBanner && (
+            <div className="nav-topbar">
+              🎁 Free shipping on orders over $75 &nbsp;·&nbsp; Use code <strong>WELCOME20</strong> for 20% off your first order
+              <button
+                className="nav-topbar-close"
+                onClick={() => this.setState({ showBanner: false })}
+                aria-label="Close banner"
+              >✕</button>
+            </div>
+          )}
+
+          {/* Main row: logo + search + actions */}
+          <div className="nav-main">
+
+            {/* Logo */}
+            <a className="nav-logo" href="/" aria-label="Maison — Home">
+              <div className="nav-logo-mark" />
+              <span className="nav-logo-text">Mai<span>son</span></span>
+            </a>
+
+            {/* Search */}
+            <div className="nav-search">
+              <span className="nav-search-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
+              <input type="text" placeholder="Search products, brands, categories…" aria-label="Search" />
+              <button className="nav-search-btn">Search</button>
+            </div>
+
+            {/* Action buttons */}
+            <div className="nav-actions">
+
+              <button className="nav-action-btn" aria-label="Account">
+                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Account</span>
+              </button>
+
+              <button className="nav-action-btn" aria-label={`Wishlist (${wishlistCount})`}>
+                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                <span>Wishlist</span>
+                {wishlistCount > 0 && <span className="nav-badge">{wishlistCount}</span>}
+              </button>
+
+              <div className="nav-divider" />
+
+              <button className="nav-action-btn" aria-label={`Cart (${cartCount} items)`}>
+                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                <span>Cart</span>
+                {cartCount > 0 && <span className="nav-badge">{cartCount}</span>}
+              </button>
+
+            </div>
+
+            {/* Mobile hamburger */}
+            <button
+              className="nav-mobile-toggle"
+              onClick={() => this.setState({ mobileOpen: !mobileOpen })}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? (
+                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
+          </div>
+
+          {/* Category nav */}
+          <div className="nav-bottom">
+            {categories.map((cat) => (
+              <div className="nav-category" key={cat.label}>
+                <button className={`nav-category-btn${cat.sale ? " active" : ""}`}>
+                  {cat.label}
+                  {cat.sale && <span className="nav-sale-tag">SALE</span>}
+                  <svg className="nav-chevron" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+                <div className="nav-dropdown">
+                  {cat.items.map((item, i) => (
+                    <React.Fragment key={item}>
+                      {i === cat.items.length - 1 && <div className="nav-dropdown-divider" />}
+                      <button className="nav-dropdown-item">{item}</button>
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {/* Right side extras */}
+            <div className="nav-bottom-right">
+              <a className="nav-track-link" href="#">
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+                Track Order
+              </a>
+              <a className="nav-track-link" href="#">
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.56 3.35 2 2 0 0 1 3.53 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.45 16" />
+                </svg>
+                Contact Us
+              </a>
+            </div>
+          </div>
+
+          {/* Mobile drawer */}
+          <div className={`nav-mobile-drawer${mobileOpen ? " open" : ""}`}>
+            {categories.map((cat) => (
+              <button className="nav-mobile-link" key={cat.label}>
+                {cat.label} {cat.sale && <span className="nav-sale-tag">SALE</span>}
+              </button>
+            ))}
+            <div style={{ height: 1, background: "var(--border)", margin: "8px 24px" }} />
+            <button className="nav-mobile-link">Track Order</button>
+            <button className="nav-mobile-link">Contact Us</button>
+          </div>
+
+        </nav>
+      </>
+    );
+  }
+}
+
+export default ShopNavbar;
